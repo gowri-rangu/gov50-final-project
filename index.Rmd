@@ -7,8 +7,19 @@ output:
     self_contained: false
 ---
 
+```{r set up}
+library(tidyverse)
+```
 
+```{r}
+day <- read_csv("finalproject/daywalking.csv")
+##Table 1a: Thinking of your personal safety, how safe or unsafe would you feel walking on your own during the day in a quiet street close to your home?
+night <- read_csv("finalproject/nightwalking.csv")
+##Table 2a: Thinking of your personal safety, how safe or unsafe would you feel walking on your own after dark in a quiet street close to your home?
+```
 
-## Project thoughts
+```{r}
+day |>
+  
+```
 
-I am interested in exploring data related to climate change and wildlife migratory patterns/changes in wildlife populations. Another potential focus for my final project is the impact on recent anti-abortion laws in Texas. I would also like to study the perception of personal safety in public spaces between men and women.

@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
 author: "Gowri Rangu"
-description: "Does gender and ethnicity play a role in the perceptions of personal safety and experiences with harassment?"
+description: "Do gender, race, income level, education, and/or age influence a person's voting habits (always, sporadic, rarely/never)?"
 output:
   distill::distill_article:
     self_contained: false
@@ -10,12 +10,9 @@ output:
 ```{r echo = FALSE}
 library(tidyverse)
 library(infer)
+voters <- read_csv("voters.csv")
 ```
 
-```{r echo = FALSE}
-```
-
-Project Proposal: Does gender and ethnicity play a role in the perceptions of personal safety and experiences with harassment? In this study, I plan to examine the possible disparities in perception of personal safety and experiences with harassment amongst genders and ethnicities. I hypothesize that women and people of color have a lower sense of personal safety and more experiences with harassment as these groups have been historically marginalized and discriminated against in society. My sample consists of over 6,000 survey male and female participants of various ethnicities - White, Asian, Black, and mixed. My unit of analysis is each respondent in the study. The explanatory variable of interest is whether or not the participant is a male or woman. Another explanatory variable is whether or not the participant is a person of color. The variable is coded =1 for female and =0 for male. My outcome variable is the percentage of respondents that feel “Very safe,” “Fairly safe,” “Fairly unsafe,” or “Very Unsafe” when he/she is walking in public at night dark alone. If I observe that more women and people of color respond in higher numbers that they feel fairly or very unsafe walking alone in the dark than those of men and White people, this would provide support for my hypothesis. On the other hand, if I observe that women and people of color respond in lower or similar numbers to the same issue than those of men and White people, this would provide evidence against my hypothesis. When I run my regression of the percentage rates of each demographic group for perceptions of feeling unsafe on the gender and ethnicity variable indicator variables, a positive, significant coefficient would indicate support for my hypothesis.
 
 ```{r echo = FALSE}
 voters |>
@@ -44,21 +41,12 @@ null_dist <- voters |>
 
 p_val <- voters |>
   get_p_value(obs_stat = ate, direction = "both")
-p_val
 
 null_dist |>
   visualise() +
   shade_p_value(obs_stat = p_val, direction = "both")
 ```
 
-
-
-
-
-```{r echo = FALSE}
-voters |>
-  count(race)
-```
 
 ```{r echo = FALSE}
 ate_gender <- voters |>
@@ -70,12 +58,9 @@ ate_gender <- voters |>
   mutate(ate = `Male` - `Female`) |>
   select(ate)
 
-ate_gender
-
 ate_ci <- ate_gender |>
   get_confidence_interval(level = 0.95, type = "percentile")
 
-ate_ci
 
 ggplot(ate_gender, aes(x = ate)) + 
   geom_histogram(aes(y = ..density..)) +

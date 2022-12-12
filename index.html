@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/header-attrs-2.16/header-attrs.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/unnamed-chunk-3-1.png","index_files/webcomponents-2.0.0/webcomponents.js","voters.csv"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/figure-html5/unnamed-chunk-7-1.png","index_files/figure-html5/unnamed-chunk-8-1.png","index_files/figure-html5/unnamed-chunk-9-1.png","index_files/header-attrs-2.16/header-attrs.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/unnamed-chunk-3-1.png","index_files/webcomponents-2.0.0/webcomponents.js","vote_nsa.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1520,17 +1520,324 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
+Distribution of votes by party
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>party</span>, <span class='va'>phone_spy_vote</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>phone_spy_vote</span>, fill <span class='op'>=</span> <span class='va'>party</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_bar</span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>scale_fill_manual</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>D <span class='op'>=</span> <span class='st'>"steelblue1"</span>,</span>
+<span>                                                              R <span class='op'>=</span> <span class='st'>"indianred1"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span></span>
+<span>    x <span class='op'>=</span> <span class='st'>""</span>, </span>
+<span>    y <span class='op'>=</span> <span class='st'>"Number of Votes"</span>, </span>
+<span>    fill <span class='op'>=</span> <span class='st'>"Party"</span></span>
+<span>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>scale_x_discrete</span><span class='op'>(</span>labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"continue_allowing_mass_surveillance"</span> <span class='op'>=</span> <span class='st'>"For Mass Surveillance"</span>, <span class='st'>"rein_in_phone_dragnet"</span> <span class='op'>=</span> <span class='st'>"Against Mass Surveillance"</span>, <span class='st'>"NA"</span> <span class='op'>=</span> <span class='st'>"Abstain"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
 <p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
+Multivariate Regression: Vote in relation to party and money
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit_data</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span>         party <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>party</span> <span class='op'>==</span> <span class='st'>"R"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span>         money <span class='op'>=</span> <span class='va'>money</span><span class='op'>/</span><span class='fl'>1000</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>position</span> <span class='op'>~</span> <span class='va'>party</span> <span class='op'>+</span> <span class='va'>money</span>, data <span class='op'>=</span> <span class='va'>fit_data</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fit</span></span></code></pre>
 </div>
+<pre><code>
+Call:
+lm(formula = position ~ party + money, data = fit_data)
+
+Coefficients:
+(Intercept)        party        money  
+   0.363251     0.130206     0.002641  </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = position ~ party + money, data = fit_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.8842 -0.4935  0.0925  0.4748  0.6368 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 0.3632511  0.0368232   9.865  &lt; 2e-16 ***
+party       0.1302057  0.0473320   2.751   0.0062 ** 
+money       0.0026410  0.0005241   5.039 6.98e-07 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.4808 on 419 degrees of freedom
+  (12 observations deleted due to missingness)
+Multiple R-squared:  0.0811,    Adjusted R-squared:  0.07671 
+F-statistic: 18.49 on 2 and 419 DF,  p-value: 2.017e-08</code></pre>
+</div>
+Scatterplot: Money vs. Vote
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>votes_scatter</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>phone_spy_vote</span>, </span>
+<span>           x <span class='op'>=</span> <span class='va'>money</span><span class='op'>/</span><span class='fl'>1000</span>,</span>
+<span>           color <span class='op'>=</span> <span class='va'>party</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_jitter</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Distribution of Money Receieved from Private Defense Industry by Position"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>votes_scatter</span></span></code></pre>
+</div>
 <p><img src="index_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
-<p>Since the confidence interval of the ATE, which runs approximately from -0.149 to -0.116, does not contain the value zero, there is significant difference in the ATE of Voting Weight between Men and Women.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+ATE
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>summarize</span><span class='op'>(</span>vote_mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>position</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>pivot_wider</span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='va'>party</span>,</span>
+<span>              values_from <span class='op'>=</span> <span class='va'>vote_mean</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>ATE <span class='op'>=</span> <span class='va'>`R`</span><span class='op'>-</span><span class='va'>`D`</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>ATE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+    ATE
+  &lt;dbl&gt;
+1 0.160</code></pre>
+</div>
+Confidence Interval &amp; Bootstrap Distribution
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>02138</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>votes_boot</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>rep_slice_sample</span><span class='op'>(</span>prop <span class='op'>=</span> <span class='fl'>1</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, reps <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>replicate</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>summarize</span><span class='op'>(</span>vote_mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>position</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>pivot_wider</span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='va'>party</span>,</span>
+<span>              values_from <span class='op'>=</span> <span class='va'>vote_mean</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>ATE <span class='op'>=</span> <span class='va'>`R`</span><span class='op'>-</span><span class='va'>`D`</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>ATE</span><span class='op'>)</span></span>
+<span></span>
+<span></span>
+<span><span class='va'>votes_boot</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1,000 × 2
+# Groups:   replicate [1,000]
+   replicate    ATE
+       &lt;int&gt;  &lt;dbl&gt;
+ 1         1 0.198 
+ 2         2 0.159 
+ 3         3 0.170 
+ 4         4 0.0567
+ 5         5 0.108 
+ 6         6 0.115 
+ 7         7 0.176 
+ 8         8 0.177 
+ 9         9 0.0987
+10        10 0.122 
+# … with 990 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_ci_95</span> <span class='op'>&lt;-</span><span class='va'>votes_boot</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>get_confidence_interval</span><span class='op'>(</span>level <span class='op'>=</span> <span class='fl'>0.95</span>, type <span class='op'>=</span> <span class='st'>"percentile"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ate_ci_95</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1   0.0588    0.255</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>votes_boot</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>ATE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'>geom_histogram</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>..density..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_vline</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>ate_ci_95</span><span class='op'>)</span><span class='op'>)</span> </span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+</div>
+Hypothesis Testing: Party vs. Vote
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>02138</span><span class='op'>)</span></span>
+<span><span class='va'>ate</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>specify</span><span class='op'>(</span><span class='va'>position</span> <span class='op'>~</span> <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>calculate</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R"</span>, <span class='st'>"D"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ate</span></span></code></pre>
+</div>
+<pre><code>Response: position (numeric)
+Explanatory: party (factor)
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1 0.160</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_null_distribution</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>specify</span><span class='op'>(</span><span class='va'>position</span> <span class='op'>~</span> <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>hypothesize</span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>generate</span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>calculate</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R"</span>, <span class='st'>"D"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ate_null_distribution</span></span></code></pre>
+</div>
+<pre><code>Response: position (numeric)
+Explanatory: party (factor)
+Null Hypothesis: independence
+# A tibble: 1,000 × 2
+   replicate     stat
+       &lt;int&gt;    &lt;dbl&gt;
+ 1         1 -0.00231
+ 2         2 -0.0882 
+ 3         3 -0.0405 
+ 4         4 -0.0214 
+ 5         5 -0.0214 
+ 6         6  0.0168 
+ 7         7  0.0359 
+ 8         8  0.0263 
+ 9         9 -0.0786 
+10        10 -0.0118 
+# … with 990 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_p</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>get_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>ate</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ate_p</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1       0</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_null_distribution</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>visualise</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>shade_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>ate_p</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-7-1.png" width="624" /></p>
+</div>
+Confidence Interval - Money vs. Vote
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>money_boot</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='st'>"For"</span>, <span class='st'>"Against"</span><span class='op'>)</span>,</span>
+<span>         party <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>party</span> <span class='op'>==</span> <span class='st'>"R"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>rep_slice_sample</span><span class='op'>(</span>prop <span class='op'>=</span> <span class='fl'>1</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, reps <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>replicate</span>, <span class='va'>position</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>summarize</span><span class='op'>(</span>money_mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>money</span><span class='op'>/</span><span class='fl'>1000</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>pivot_wider</span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='va'>position</span>,</span>
+<span>              values_from <span class='op'>=</span> <span class='va'>money_mean</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>ATE <span class='op'>=</span> <span class='va'>`For`</span> <span class='op'>-</span> <span class='va'>`Against`</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>ATE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>money_boot</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1,000 × 2
+# Groups:   replicate [1,000]
+   replicate   ATE
+       &lt;int&gt; &lt;dbl&gt;
+ 1         1  22.6
+ 2         2  28.4
+ 3         3  19.4
+ 4         4  25.0
+ 5         5  17.1
+ 6         6  29.8
+ 7         7  26.1
+ 8         8  28.4
+ 9         9  20.0
+10        10  21.8
+# … with 990 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>money_boot_ci_95</span> <span class='op'>&lt;-</span> <span class='va'>money_boot</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>get_confidence_interval</span><span class='op'>(</span>level <span class='op'>=</span> <span class='fl'>0.95</span>, type <span class='op'>=</span> <span class='st'>"percentile"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>money_boot_ci_95</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1     15.5     31.5</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>money_boot</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>ATE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'>geom_histogram</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>..density..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_vline</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>money_boot_ci_95</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+</div>
+Hypothesis Testing: Money vs. Vote
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_money</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='st'>"For"</span>, <span class='st'>"Against"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>specify</span><span class='op'>(</span><span class='va'>money</span> <span class='op'>~</span> <span class='va'>position</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>calculate</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"For"</span>, <span class='st'>"Against"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ate_money</span></span></code></pre>
+</div>
+<pre><code>Response: money (numeric)
+Explanatory: position (factor)
+# A tibble: 1 × 1
+    stat
+   &lt;dbl&gt;
+1 22870.</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_money_null_dist</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='st'>"For"</span>, <span class='st'>"Against"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>specify</span><span class='op'>(</span><span class='va'>money</span> <span class='op'>~</span> <span class='va'>position</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>hypothesise</span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>generate</span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>calculate</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"For"</span>, <span class='st'>"Against"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ate_money_null_dist</span></span></code></pre>
+</div>
+<pre><code>Response: money (numeric)
+Explanatory: position (factor)
+Null Hypothesis: independence
+# A tibble: 1,000 × 2
+   replicate   stat
+       &lt;int&gt;  &lt;dbl&gt;
+ 1         1  1605.
+ 2         2   707.
+ 3         3 -1394.
+ 4         4  3438.
+ 5         5 -1237.
+ 6         6 -1952.
+ 7         7 -4493.
+ 8         8 -1629.
+ 9         9  2122.
+10        10 -2801.
+# … with 990 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_money_p</span> <span class='op'>&lt;-</span> <span class='va'>votes</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>phone_spy_vote</span> <span class='op'>==</span> <span class='st'>"continue_allowing_mass_surveillance"</span>, <span class='st'>"For"</span>, <span class='st'>"Against"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'>get_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>ate_money</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ate_money_p</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1       0</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ate_money_null_dist</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>visualise</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>shade_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>ate_money_p</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
+</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

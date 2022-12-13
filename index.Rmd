@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
 author: "Gowri Rangu"
-description: "Do gender, race, income level, education, and/or age influence a person's voting habits (always, sporadic, rarely/never)?"
+description: "Did private defense funding and party identification influence the House of Representatives' 2013 vote to continue the National Security Agency's (NSA's) mass surveillance of phone behaviors?"
 output:
   distill::distill_article:
     self_contained: false
@@ -10,183 +10,60 @@ output:
 ```{r echo = FALSE}
 library(tidyverse)
 library(infer)
-library(scales)
-votes <- read_csv("vote_nsa.csv")
+library(kableExtra)
 
+
+votes <- read_csv("vote_nsa.csv") |>
+  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", 1, 0),
+         party_bi = ifelse(party == "R", 1, 0),
+         money_thous = money/1000) |>
+  drop_na(phone_spy_vote)
+
+votes |>
+  count(position)
+```
+
+```{r echo = FALSE}
+votes |>
+  ggplot(aes(x = money_thous, fill = as.factor(position))) + 
+  geom_histogram(aes(y = ..count../sum(..count..)), position = "stack", col = "white") + 
+  labs(x = "Funding Recieved (in thousands)",
+       y = "Proportion of Voting Stances",
+       fill = "Vote")  +
+  scale_fill_manual(values = c("red2", "forestgreen"))
 ```
 
 Distribution of votes by party
-```{r}
+```{r echo = FALSE}
 votes |>
-  group_by(party, phone_spy_vote) |>
-  ggplot(aes(x = phone_spy_vote, fill = party)) +
-  geom_bar(position = "dodge") + scale_fill_manual(values = c(D = "steelblue1",
-                                                              R = "indianred1")) +
+  filter(position == 1)|>
+  ggplot(aes(x = position, fill = as.factor(party))) + 
+  geom_histogram(aes(y = ..count../sum(..count..)), party = "stack", col = "white") +
   labs(
-    x = "", 
-    y = "Number of Votes", 
+    title = "Distribution of Votes in Support of NSA Amendment by Party",
+    x = "v", 
+    y = "Proportion of Votes for Mass Surveillance", 
     fill = "Party"
-  ) +
-  scale_x_discrete(labels=c("continue_allowing_mass_surveillance" = "For Mass Surveillance", "rein_in_phone_dragnet" = "Against Mass Surveillance", "NA" = "Abstain"))
+  ) + scale_x_discrete(labels=c("continue_allowing_mass_surveillance" = "")) +
+  scale_fill_manual(values = c("steelblue1", "indianred1"))
 ```
-
-
 
 Multivariate Regression: Vote in relation to party and money
-```{r}
-fit_data <- votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", 1, 0),
-         party = ifelse(party == "R", 1, 0),
-         money = money/1000)
-
-fit <- lm(position ~ party + money, data = fit_data)
-
-fit
-
-summary(fit)
-```
+```{r echo = FALSE}
 
 
-Scatterplot: Money vs. Vote
-```{r}
-votes_scatter <- votes |> 
-  ggplot(aes(y = phone_spy_vote, 
-           x = money/1000,
-           color = party)) +
-  geom_jitter() + 
-  labs(title = "Distribution of Money Receieved from Private Defense Industry by Position")
+fit <- lm(position ~ party + money_thous, data = votes) 
 
-votes_scatter
-```
+tab <- summary(fit)$coefficients
 
-ATE 
-```{r}
-votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", 1, 0)) |>
-  group_by(party) |>
-  summarize(vote_mean = mean(position, na.rm = TRUE)) |>
-  pivot_wider(names_from = party,
-              values_from = vote_mean) |>
-  mutate(ATE = `R`-`D`) |>
-  select(ATE)
-```
+row.names(tab) <- c("Intercept", "Party", "Defense Funding (in thousands)")
+colnames(tab) <- c("Estimate", "Std. Error", "t-value", "p-value")
 
-Confidence Interval & Bootstrap Distribution
-```{r}
-set.seed(02138)
-
-votes_boot <- votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", 1, 0)) |>
-  rep_slice_sample(prop = 1, replace = TRUE, reps = 1000) |>
-  group_by(replicate, party) |>
-  summarize(vote_mean = mean(position, na.rm = TRUE)) |>
-  pivot_wider(names_from = party,
-              values_from = vote_mean) |>
-  mutate(ATE = `R`-`D`) |>
-  select(ATE)
-
-
-votes_boot
-
-ate_ci_95 <-votes_boot |>
-  get_confidence_interval(level = 0.95, type = "percentile")
-
-ate_ci_95
-
-ggplot(votes_boot, aes(x = ATE)) + 
-  geom_histogram(aes(y = ..density..)) +
-  geom_vline(xintercept = unlist(ate_ci_95)) 
-```
-Hypothesis Testing: Party vs. Vote
-```{r}
-set.seed(02138)
-ate <- votes |>
-  drop_na() |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", 1, 0)) |>
-  specify(position ~ party) |>
-  calculate(stat = "diff in means", order = c("R", "D"))
-
-ate
-
-
-
-ate_null_distribution <- votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", 1, 0)) |>
-  specify(position ~ party) |>
-  hypothesize(null = "independence") |>
-  generate(reps = 1000, type = "permute") |>
-  calculate(stat = "diff in means", order = c("R", "D"))
-
-ate_null_distribution
-
-ate_p <- votes |>
-  drop_na() |>
-  get_p_value(obs_stat = ate, direction = "both")
-
-ate_p
-
-ate_null_distribution |>
-  visualise() +
-  shade_p_value(obs_stat = ate_p, direction = "both")
-  
-```
-Confidence Interval - Money vs. Vote
-```{r}
-money_boot <- votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", "For", "Against"),
-         party = ifelse(party == "R", 1, 0)) |>
-  drop_na() |>
-  rep_slice_sample(prop = 1, replace = TRUE, reps = 1000) |>
-  group_by(replicate, position) |>
-  summarize(money_mean = mean(money/1000, na.rm = TRUE)) |>
-  pivot_wider(names_from = position,
-              values_from = money_mean) |>
-  mutate(ATE = `For` - `Against`)|>
-  select(ATE)
-
-money_boot
-
-money_boot_ci_95 <- money_boot |>
-  get_confidence_interval(level = 0.95, type = "percentile")
-
-money_boot_ci_95
-
-ggplot(money_boot, aes(x = ATE)) + 
-  geom_histogram(aes(y = ..density..)) +
-  geom_vline(xintercept = unlist(money_boot_ci_95))
+kbl(tab, digits = 3) |>
+  kable_styling(bootstrap_options = "striped", font_size = 12, full_width = F)
 
 ```
 
 
-Hypothesis Testing: Money vs. Vote
-```{r}
-ate_money <- votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", "For", "Against")) |>
-  drop_na() |>
-  specify(money ~ position) |>
-  calculate(stat = "diff in means", order = c("For", "Against"))
 
-ate_money
-
-ate_money_null_dist <- votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", "For", "Against")) |>
-  drop_na() |>
-  specify(money ~ position) |>
-  hypothesise(null = "independence") |>
-  generate(reps = 1000, type = "permute") |>
-  calculate(stat = "diff in means", order = c("For", "Against"))
-
-ate_money_null_dist
-
-ate_money_p <- votes |>
-  mutate(position = ifelse(phone_spy_vote == "continue_allowing_mass_surveillance", "For", "Against")) |>
-  drop_na() |> 
-  get_p_value(obs_stat = ate_money, direction = "both")
-
-ate_money_p
-
-ate_money_null_dist |>
-  visualise() +
-  shade_p_value(obs_stat = ate_money_p, direction = "both")
-```
 

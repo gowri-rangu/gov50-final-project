@@ -24,7 +24,7 @@ votes <- read_csv("vote_nsa.csv") |>
   drop_na(phone_spy_vote)
 ```
 ## **Data and Research Design**
-The data analyzed in this study is derived from the original votes of the U.S. House of Representatives on the 2013 NSA Phone Spying amendment. Since the independent and dependent variables were measured at the same time - after the vote was finalized - this observational study is of a cross-sectional design. The two explanatory variables are the amount of money (in thousands of dollars) that each representative received from the defense industry, a discrete variable, and his/her respective party, a binary variable. Coding an individual as a `0` signified that he/she was a Democrat while a `1` indicated Republican.
+The data analyzed in this study is derived from the original votes of the U.S. House of Representatives on the 2013 NSA Phone Spying amendment. Since the independent and dependent variables were measured at the same time - after the vote was finalized - this observational study is of a cross-sectional design. The two explanatory variables are the amount of money (in thousands of dollars) that each representative received from the defense industry, a discrete variable, and their respective party, a binary variable. Coding an individual as a `0` signified that they were a Democrat while a `1` indicated Republican.
 
 ```{r echo = FALSE}
 votes |>
@@ -88,7 +88,7 @@ kbl(tab, digits = 3) |>
 
 ```
 
-These regression results show that there is a positive, statistically significant correlation between a representative’s party and defense funding and his/her vote on phone security. 
+These regression results show that there is a positive, statistically significant correlation between a representative’s party and defense funding and their vote on phone security. 
 
 Holding campaign funding at a constant value, the multivariate model suggests that, on average, a one-unit increase of a representative identifying as Republican is associated with a predicted increase of 0.130 in votes supporting the NSA’s continued mass surveillance. On the other hand, holding party identity at a constant value, a one-thousand dollar increase in the amount of funding received is associated with a predicted increase of 0.003 in votes for passing the amendment. Comparing these two findings, there is a larger correlation between party affiliation and voting is clearly stronger than funds and voting.  
 
@@ -96,7 +96,7 @@ Holding campaign funding at a constant value, the multivariate model suggests th
 In the multivariate analysis, the associations between party identity and voting and between funding and voting are statistically significant at the test level α = 0.05 as both p-values are approximately 0. Although there is statistical significance for both correlations, the stronger, more notable relationship is with the explanatory variable of party affiliation rather than defense funding as the former has a higher coefficient of 0.130. 
 
 ### **Causality and Confounders**
-The findings from the regression analysis cannot be interpreted causally since the explanatory variables were not randomly assigned to each representative and his/her vote. In other words, because there was no control and treatment in this study, an increase in the number of Republicans or in the amount of funding cannot in turn mean a causal increase for increases in the number of votes supporting the NSA. 
+The findings from the regression analysis cannot be interpreted causally since the explanatory variables were not randomly assigned to each representative and their vote. In other words, because there was no control and treatment in this study, an increase in the number of Republicans or in the amount of funding cannot in turn mean a causal increase for increases in the number of votes supporting the NSA. 
 
 There are a few possible confounding variables that were excluded from this study due a lack of data available. One possible confounder is the representative’s policy and political alignment with President Barack Obama who was president the same year of the NSA amendment vote. This factor influences the funding variable as representatives with more party support from the President will most likely not need as much campaign financing than those without the President’s backing. Moreover, this variable could have affected the results of the vote as representatives with a significant sense of party loyalty could have casted a vote that aligned with the Obama administration. 
 
